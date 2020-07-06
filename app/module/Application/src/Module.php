@@ -21,7 +21,7 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        switch(substr($e->getRequest()->getQuery('lang'), 0, 2)) {
+        switch(strtolower(substr($e->getRequest()->getQuery('lang'), 0, 2))) {
             case 'ru':
                 $lang = 'ru';
                 break;

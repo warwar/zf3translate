@@ -9,6 +9,7 @@ namespace ApplicationTest\Controller;
 
 use Application\Controller\IndexController;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Parameters;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
@@ -50,4 +51,21 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch('/invalid/route', 'GET');
         $this->assertResponseStatusCode(404);
     }
+
+    public function testIndexActionEnTranslate()
+    {
+        $translator = $this->getApplication()->getServiceManager()->get('MvcTranslator');
+        $translator->setLocale('en');
+        $this->dispatch('/', 'GET');
+        $this->assertQueryContentContains('.container .jumbotron .zf-green', 'Zend Framework');
+    }
+
+    public function testIndexActionRuTranslate()
+    {
+        $translator = $this->getApplication()->getServiceManager()->get('MvcTranslator');
+        $translator->setLocale('ru');
+        $this->dispatch('/', 'GET');
+        $this->assertQueryContentContains('.container .jumbotron .zf-green', 'Зенд фреймворк');
+    }
+
 }
